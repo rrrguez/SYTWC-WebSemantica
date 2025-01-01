@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { fetchSPARQLData } from "./services/sparqlService";
+import { fetchSeriesData } from "./services/sparqlService";
 import SagaDetails from "./components/SagaDetails";
 import PartList from "./components/PartList";
 
@@ -9,7 +9,7 @@ function App() {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    const data = await fetchSPARQLData(sagaName);
+    const data = await fetchSeriesData(sagaName);
     setSagaDetails(data);
   };
 
