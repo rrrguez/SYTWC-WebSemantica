@@ -1,36 +1,36 @@
 import React, { useState } from "react";
 import { fetchSPARQLData } from "./services/sparqlService";
+import SagaDetails from "./components/SagaDetails";
+import PartList from "./components/PartList";
 
 function App() {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
+  const [sagaName, setSagaName] = useState("");
+  const [sagaDetails, setSagaDetails] = useState(null);
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    const data = await fetchSPARQLData(query);
-    setResults(data);
+    const data = await fetchSPARQLData(sagaName);
+    setSagaDetails(data);
   };
 
   return (
     <div>
-      <h1>Búsqueda de Juegos de Nintendo</h1>
+      <h1>Games Wiki</h1>
       <form onSubmit={handleSearch}>
         <input
           type="text"
-          placeholder="Introduce el nombre del juego"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          placeholder="E.g. Animal Crossing"
+          value={sagaName}
+          onChange={(e) => setSagaName(e.target.value)}
         />
-        <button type="submit">Buscar</button>
+        <button type="submit">Search</button>
       </form>
-      <div>
-        {results.map((result, index) => (
-          <div key={index}>
-            <strong>{result.name}</strong>
-            <p>{result.platform}</p>
-          </div>
-        ))}
-      </div>
+      {sagaDetails && (
+        <>
+          <SagaDetails details={sagaDetails} />
+          <PartList parts={sagaDetails.parts} />
+        </>
+      )}
     </div>
   );
 }

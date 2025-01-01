@@ -1,10 +1,10 @@
 export async function fetchSPARQLData(query) {
     const sparqlQuery = `
-      SELECT DISTINCT ?series ?seriesLabel ?originalTitle ?logo ?genreLabel ?publisherLabel ?platformLabel ?partLabel WHERE {
+      SELECT DISTINCT ?series ?seriesLabel ?originalTitle ?logo ?genreLabel ?publisherLabel ?platformLabel ?part ?partLabel WHERE {
         ?series wdt:P31 wd:Q7058673;
                 rdfs:label ?seriesLabel.
 
-        FILTER(CONTAINS(LCASE(?seriesLabel), LCASE("animal crossing"))).
+        FILTER(CONTAINS(LCASE(?seriesLabel), LCASE("${query}"))).
 
         OPTIONAL { ?series wdt:P1476 ?originalTitle. }
         OPTIONAL { ?series wdt:P154 ?logo. }
@@ -13,7 +13,8 @@ export async function fetchSPARQLData(query) {
         OPTIONAL { ?series wdt:P400 ?platform. }
 
         OPTIONAL {
-          ?part wdt:P527 wd:Q7889; rdfs:label ?partLabel.
+          ?series wdt:P527 ?part.
+          FILTER(LANG(?seriesLabel) = "en").
         }
 
         SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
