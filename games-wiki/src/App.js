@@ -3,6 +3,7 @@ import { fetchGameData, fetchSeriesData } from "./services/sparqlService";
 import SagaDetails from "./components/SagaDetails";
 import PartList from "./components/PartList";
 import GameDetails from "./components/GameDetails";
+import "./styles/App.css"
 
 function App() {
   const [sagaName, setSagaName] = useState("");
@@ -23,7 +24,10 @@ function App() {
 
   return (
     <div>
-      <h1>Games Wiki</h1>
+      <header>
+        <h1>Games Wiki</h1>
+
+      </header>
       <form onSubmit={handleSearch}>
         <input
           type="text"

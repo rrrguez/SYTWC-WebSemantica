@@ -1,3 +1,21 @@
+header {
+  display: grid;
+  place-items: center;
+
+  background-color: royalblue;
+  background-image: url("../../public/banner.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  height: 200px;
+  width: 100%;
+}
+
+h1 {
+  align-items: center;
+}
+
 .App {
   text-align: center;
 }
