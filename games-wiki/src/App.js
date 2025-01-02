@@ -1,17 +1,25 @@
 import React, { useState } from "react";
-import { fetchSeriesData } from "./services/sparqlService";
+import { fetchGameData, fetchSeriesData } from "./services/sparqlService";
 import SagaDetails from "./components/SagaDetails";
 import PartList from "./components/PartList";
+import GameDetails from "./components/GameDetails";
 
 function App() {
   const [sagaName, setSagaName] = useState("");
   const [sagaDetails, setSagaDetails] = useState(null);
+  const [gameDetails, setGameDetails] = useState(null);
 
   const handleSearch = async (e) => {
     e.preventDefault();
     const data = await fetchSeriesData(sagaName);
     setSagaDetails(data);
+    setGameDetails(null);
   };
+
+  const handleGameClick = async (gameUri) => {
+    const details = await fetchGameData(gameUri);
+    setGameDetails(details);
+  }
 
   return (
     <div>
@@ -28,9 +36,10 @@ function App() {
       {sagaDetails && (
         <>
           <SagaDetails details={sagaDetails} />
-          <PartList parts={sagaDetails.parts} />
+          <PartList parts={sagaDetails.parts} partIds={sagaDetails.partIds} onGameClick={handleGameClick}/>
         </>
       )}
+      {gameDetails && <GameDetails details={gameDetails} />}
     </div>
   );
 }
