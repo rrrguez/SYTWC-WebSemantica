@@ -1,9 +1,10 @@
 import React from "react";
+import "../styles/SagaDetails.css"
 
 function SagaDetails({ details }) {
     return (
         <div>
-            {details.logo && <img src={details.logo} alt={`${details.title} logo`} />}
+            {details.logo && <img src={details.logo} alt={`${details.title} logo`} className="saga-logo" />}
             <p><strong>Original title:</strong> {details.originalTitle}</p>
             <p><strong>Genre:</strong> {details.genre}</p>
             <p><strong>Publisher:</strong> {details.publisher}</p>

@@ -3,6 +3,10 @@
   src: url('../../public/fonts/Retro\ Gaming.ttf') format('truetype');
 }
 
+* {
+  font-family: 'OpenType', sans-serif;
+}
+
 header {
   display: grid;
   align-items: center;
@@ -108,7 +112,7 @@ button:hover {
 .saga-details-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 15px;
+  gap: 25px;
 }
 
 .game-container {

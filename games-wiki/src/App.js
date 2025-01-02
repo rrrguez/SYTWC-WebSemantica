@@ -42,25 +42,23 @@ function App() {
         </form>
       </div>
 
-      <div className="data-container">
-        <div className="details-container">
-          <h2>{sagaDetails.title}</h2>
-          <div className="saga-details-container">
-            {sagaDetails && (
-              <>
-                <SagaDetails details={sagaDetails}/>
-                <PartList parts={sagaDetails.parts} partIds={sagaDetails.partIds} onGameClick={handleGameClick}/>
-              </>
-            )}
-          </div>
-        </div>
-
-        {gameDetails && (
+      {sagaDetails && (
+        <div className="data-container">
           <div className="details-container">
-            {gameDetails && <GameDetails details={gameDetails} />}
+            <h2>{sagaDetails.title}</h2>
+            <div className="saga-details-container">
+              <SagaDetails details={sagaDetails}/>
+              <PartList parts={sagaDetails.parts} partIds={sagaDetails.partIds} onGameClick={handleGameClick}/>
+            </div>
           </div>
-        )}
-      </div>
+
+          {gameDetails && (
+            <div className="details-container">
+              {gameDetails && <GameDetails details={gameDetails} />}
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 }
