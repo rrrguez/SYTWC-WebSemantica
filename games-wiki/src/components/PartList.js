@@ -8,8 +8,6 @@ function PartList({ parts, partIds, onGameClick }) {
                 {parts.map((part, index) => (
                     <li key={index}>
                         <a href="/" onClick={(e) => {
-                            console.log(partIds[index] + " - " + part[index])
-
                             e.preventDefault();
                             const wd = partIds[index].split("/").pop();
                             onGameClick(wd);

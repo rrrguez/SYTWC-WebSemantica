@@ -48,7 +48,8 @@ export async function fetchSeriesData(query) {
         ...new Set(data.results.bindings.map((binding) => binding.part?.value).filter(Boolean)),
       ],
       parts: [
-        ...new Set(data.results.bindings.map((binding) => binding.partLabel?.value).filter(Boolean)),
+        ...new Set(data.results.bindings.map((binding) => binding.partLabel?.value).filter(Boolean),
+        ),
       ],
     };
 
@@ -57,9 +58,8 @@ export async function fetchSeriesData(query) {
   
 export async function fetchGameData(gameUri) {
   console.log(gameUri);
-
   const sparqlQuery = `
-    SELECT DISTINCT ?game ?gameLabel ?logo ?originalTitle ?genreLabel ?publisherLabel ?countryLabel ?releaseDate ?sales ?developerLabel ?platformLabel ?gameModeLabel ?announcementDate WHERE {
+    SELECT DISTINCT ?game ?gameLabel ?logo ?originalTitle ?genreLabel ?publisherLabel ?countryLabel ?developerLabel ?platformLabel ?gameModeLabel ?announcementDate WHERE {
       
       BIND(wd:${gameUri} AS ?game)
 
@@ -68,8 +68,6 @@ export async function fetchGameData(gameUri) {
       OPTIONAL { ?game wdt:P136 ?genre. }
       OPTIONAL { ?game wdt:P123 ?publisher. }
       OPTIONAL { ?game wdt:P495 ?country. }
-      OPTIONAL { ?game wdt:P577 ?releaseDate. }
-      OPTIONAL { ?game wdt:P2664 ?sales. }
       OPTIONAL { ?game wdt:P178 ?developer. }
       OPTIONAL {
         ?game wdt:P400 ?platform. 
@@ -85,14 +83,49 @@ export async function fetchGameData(gameUri) {
     }
   `;
 
+  const sortedSparQLQuery = `
+    SELECT DISTINCT ?releaseDate ?placeLabel ?flagImage ?sales WHERE {
+
+      BIND(wd:${gameUri} AS ?game)
+
+      ?game p:P577 ?releaseStatement.
+      ?releaseStatement ps:P577 ?releaseDate.
+      
+      ?game p:P2664 ?salesStatement.
+      ?salesStatement ps:P2664 ?sales.
+      
+      FILTER(REGEX(STR(?releaseDate), "-")).
+      
+      OPTIONAL {
+        ?releaseStatement pq:P291 ?place.
+        ?place wdt:P41 ?flagImage.
+      }
+
+      ?game rdfs:label ?gameLabel.
+      FILTER(LANG(?gameLabel) = "en").
+
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+    }
+
+    ORDER BY ASC(?releaseDate) DESC(?sales)
+    LIMIT 1
+  `;
+
   const endpoint = "https://query.wikidata.org/sparql";
   const url = `${endpoint}?query=${encodeURIComponent(sparqlQuery)}`;
+  const Url2 = `${endpoint}?query=${encodeURIComponent(sortedSparQLQuery)}`;
 
   const response = await fetch(url, {
     headers: { Accept: "application/sparql-results+json" },
   });
 
   const data = await response.json();
+
+  const dateResponse = await fetch(Url2, {
+    headers: { Accept: "application/sparql-results+json" },
+  });
+
+  const dateData = await dateResponse.json();
 
   const gameDetails = {
     logo: data.results.bindings[0]?.logo?.value,
@@ -103,8 +136,10 @@ export async function fetchGameData(gameUri) {
     ],
     publisher: data.results.bindings[0]?.publisherLabel?.value || "Not specified",
     country: data.results.bindings[0]?.countryLabel?.value || "Not specified",
-    releaseDate: data.results.bindings[0]?.releaseDate?.value || "Not specified",
-    sales: data.results.bindings[0]?.sales?.value || "Not specified",
+    releaseDate: dateData.results.bindings[0]?.releaseDate?.value || null,
+    placeLabel: dateData.results.bindings[0]?.placeLabel?.value || "Not specified",
+    flagImage: dateData.results.bindings[0]?.flagImage?.value || null,
+    sales: dateData.results.bindings[0]?.sales?.value || "Not specified",
     developer: data.results.bindings[0]?.developerLabel?.value || "Not specified",
     platform: [
       ...new Set(data.results.bindings.map((binding) => binding.platformLabel?.value).filter(Boolean)),
@@ -112,7 +147,7 @@ export async function fetchGameData(gameUri) {
     gameMode: [
       ...new Set(data.results.bindings.map((binding) => binding.gameModeLabel?.value).filter(Boolean)),
     ],
-    announcementDate: data.results.bindings[0]?.announcementDate?.value || "Not specified",
+    announcementDate: data.results.bindings[0]?.announcementDate?.value || null,
   };
 
   return gameDetails;
