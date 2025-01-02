@@ -23,28 +23,45 @@ function App() {
   }
 
   return (
-    <div>
+    <>
       <header>
         <h1>Games Wiki</h1>
         <h2 className="page-subtitle"> The Video Game Series Database </h2>
       </header>
-      <form onSubmit={handleSearch}>
-        <input
-          type="text"
-          placeholder="E.g. Animal Crossing"
-          value={sagaName}
-          onChange={(e) => setSagaName(e.target.value)}
-        />
-        <button type="submit">Search</button>
-      </form>
-      {sagaDetails && (
-        <>
-          <SagaDetails details={sagaDetails} />
-          <PartList parts={sagaDetails.parts} partIds={sagaDetails.partIds} onGameClick={handleGameClick}/>
-        </>
-      )}
-      {gameDetails && <GameDetails details={gameDetails} />}
-    </div>
+
+      <div className="search-section">
+        <form onSubmit={handleSearch} className="search-items">
+          <input
+            className="input-field"
+            type="text"
+            placeholder="Introduce the name of a video game series"
+            value={sagaName}
+            onChange={(e) => setSagaName(e.target.value)}
+          />
+          <button type="submit">Search</button>
+        </form>
+      </div>
+
+      <div className="data-container">
+        <div className="details-container">
+          <h2>{sagaDetails.title}</h2>
+          <div className="saga-details-container">
+            {sagaDetails && (
+              <>
+                <SagaDetails details={sagaDetails}/>
+                <PartList parts={sagaDetails.parts} partIds={sagaDetails.partIds} onGameClick={handleGameClick}/>
+              </>
+            )}
+          </div>
+        </div>
+
+        {gameDetails && (
+          <div className="details-container">
+            {gameDetails && <GameDetails details={gameDetails} />}
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 

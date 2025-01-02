@@ -3,7 +3,6 @@ import React from "react";
 function SagaDetails({ details }) {
     return (
         <div>
-            <h2>{details.title}</h2>
             {details.logo && <img src={details.logo} alt={`${details.title} logo`} />}
             <p><strong>Original title:</strong> {details.originalTitle}</p>
             <p><strong>Genre:</strong> {details.genre}</p>
