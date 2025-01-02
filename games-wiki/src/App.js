@@ -26,7 +26,7 @@ function App() {
     <div>
       <header>
         <h1>Games Wiki</h1>
-
+        <h2 className="page-subtitle"> The Video Game Series Database </h2>
       </header>
       <form onSubmit={handleSearch}>
         <input
