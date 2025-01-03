@@ -1,6 +1,6 @@
 export async function fetchSeriesData(query) {
     const sparqlQuery = `
-      SELECT DISTINCT ?series ?seriesLabel ?originalTitle ?image ?genreLabel ?publisherLabel ?platformLabel ?part ?partLabel WHERE {
+      SELECT DISTINCT ?series ?seriesLabel ?originalTitle ?logo ?genreLabel ?publisherLabel ?platformLabel ?part ?partLabel WHERE {
         ?series wdt:P31 wd:Q7058673;
                 rdfs:label ?seriesLabel.
 
@@ -8,8 +8,6 @@ export async function fetchSeriesData(query) {
 
         OPTIONAL { ?series wdt:P1476 ?originalTitle. }
         OPTIONAL { ?series wdt:P154 ?logo. }
-        OPTIONAL { ?series wdt:P2910 ?icon. }
-        BIND(COALESCE(?logo, ?icon) AS ?image).
 
         OPTIONAL { ?series wdt:P136 ?genre. }
         OPTIONAL { ?series wdt:P123 ?publisher. }
@@ -38,7 +36,7 @@ export async function fetchSeriesData(query) {
     const details = {
       title: data.results.bindings[0]?.seriesLabel?.value || "Not specified",
       originalTitle: data.results.bindings[0]?.originalTitle?.value || "Not specified",
-      logo: data.results.bindings[0]?.image?.value || null,
+      logo: data.results.bindings[0]?.logo?.value || null,
       genre: data.results.bindings[0]?.genreLabel?.value || "Not specified",
       publisher: data.results.bindings[0]?.publisherLabel?.value || "Not specified",
       platforms: [
@@ -94,7 +92,7 @@ export async function fetchGameData(gameUri) {
       ?game p:P2664 ?salesStatement.
       ?salesStatement ps:P2664 ?sales.
       
-      FILTER(REGEX(STR(?releaseDate), "-")).
+      FILTER(!STRSTARTS(STR(?releaseDate), CONCAT(STR(YEAR(?releaseDate)), "-01-01"))).
       
       OPTIONAL {
         ?releaseStatement pq:P291 ?place.
@@ -140,7 +138,9 @@ export async function fetchGameData(gameUri) {
     placeLabel: dateData.results.bindings[0]?.placeLabel?.value || "Not specified",
     flagImage: dateData.results.bindings[0]?.flagImage?.value || null,
     sales: dateData.results.bindings[0]?.sales?.value || "Not specified",
-    developer: data.results.bindings[0]?.developerLabel?.value || "Not specified",
+    developer: [
+      ...new Set(data.results.bindings.map((binding) => binding.developerLabel?.value).filter(Boolean)),
+    ],
     platform: [
       ...new Set(data.results.bindings.map((binding) => binding.platformLabel?.value).filter(Boolean)),
     ],

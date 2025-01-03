@@ -122,3 +122,8 @@ button:hover {
 h2 {
   text-align: center;
 }
+
+.saga-logo {
+  max-height: 200px;
+  margin: 0 auto;
+}

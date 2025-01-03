@@ -45,7 +45,11 @@ function App() {
       {sagaDetails && (
         <div className="data-container">
           <div className="details-container">
-            <h2>{sagaDetails.title}</h2>
+            { sagaDetails.logo ? (
+              <img src={sagaDetails.logo} alt={`${sagaDetails.title} logo`} className="saga-logo" />
+            ) : (
+              <h2>{sagaDetails.title}</h2>
+            )}
             <div className="saga-details-container">
               <SagaDetails details={sagaDetails}/>
               <PartList parts={sagaDetails.parts} partIds={sagaDetails.partIds} onGameClick={handleGameClick}/>

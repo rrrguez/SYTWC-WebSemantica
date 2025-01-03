@@ -1,9 +1,10 @@
 import React from "react";
+import "../styles/PartList.css"
 
 function PartList({ parts, partIds, onGameClick }) {
     return (
         <div>
-            <h3> Video games in this series:</h3>
+            <p><strong>Video games in this series:</strong></p>
             <ul>
                 {parts.map((part, index) => (
                     <li key={index}>
