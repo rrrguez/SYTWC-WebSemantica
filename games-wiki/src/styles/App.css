@@ -63,7 +63,7 @@ h1 {
   padding-right: 10px;
 
   height: 30px;
-  width: 310px;
+  width: 350px;
 }
 
 .input-field:hover {
@@ -107,6 +107,10 @@ button:hover {
   text-align: justify;
   position: relative;
   margin:15px;
+}
+
+#saga-container {
+  display: grid;
 }
 
 .saga-details-container {

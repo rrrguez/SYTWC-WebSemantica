@@ -39,10 +39,12 @@ export async function fetchSeriesData(query) {
       title: data.results.bindings[0]?.seriesLabel?.value || "Not specified",
       originalTitle: data.results.bindings[0]?.originalTitle?.value || "Not specified",
       logo: data.results.bindings[0]?.logo?.value || null,
-      genre: data.results.bindings[0]?.genreLabel?.value || "Not specified",
+      genre: [
+        ...new Set(data.results.bindings.map((binding) => binding.genreLabel?.value || "Not specified")),
+      ],
       publisher: data.results.bindings[0]?.publisherLabel?.value || "Not specified",
       platforms: [
-        ...new Set(data.results.bindings.map((binding) => binding.platformLabel?.value).filter(Boolean)),
+        ...new Set(data.results.bindings.map((binding) => binding.platformLabel?.value || "Not specified")),
       ],
       partIds: [
         ...new Set(data.results.bindings.map((binding) => binding.part?.value).filter(Boolean)),
@@ -54,6 +56,11 @@ export async function fetchSeriesData(query) {
     };
 
     document.body.style.cursor = "default";
+
+    if (details.title === "Not specified") {
+      alert(`ERROR: Could not find a video game series named "${query}"`)
+      return
+    }
 
     return details;
   }
