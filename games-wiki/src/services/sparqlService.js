@@ -56,6 +56,8 @@ export async function fetchSeriesData(query) {
         ],
       };
 
+      document.body.style.cursor = "default";
+      
       if (details.title === "Not specified") {
         alert(`ERROR: Could not find a video game series named "${query}"`)
         return
