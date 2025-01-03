@@ -41,11 +41,11 @@ export async function fetchSeriesData(query) {
         originalTitle: data.results.bindings[0]?.originalTitle?.value || "Not specified",
         logo: data.results.bindings[0]?.logo?.value || null,
         genre: [
-          ...new Set(data.results.bindings.map((binding) => binding.genreLabel?.value).filter(Boolean)),
+          ...new Set(data.results.bindings.map((binding) => binding.genreLabel?.value || "Not specified")),
         ],
         publisher: data.results.bindings[0]?.publisherLabel?.value || "Not specified",
         platforms: [
-          ...new Set(data.results.bindings.map((binding) => binding.platformLabel?.value).filter(Boolean)),
+          ...new Set(data.results.bindings.map((binding) => binding.platformLabel?.value  || "Not specified")),
         ],
         partIds: [
           ...new Set(data.results.bindings.map((binding) => binding.part?.value).filter(Boolean)),
@@ -59,7 +59,7 @@ export async function fetchSeriesData(query) {
       document.body.style.cursor = "default";
 
       if (details.title === "Not specified") {
-        alert(`ERROR: Could not find a video game series named "${query}"`)
+        alert(`ERROR: Could not find video game series "${query}"`)
         return
       }
 
@@ -67,7 +67,7 @@ export async function fetchSeriesData(query) {
 
     } catch(error) {
       document.body.style.cursor = "default";
-      alert(`ERROR: Could not find video game series "${query}":\n` + error);
+      alert(`ERROR: Could not fetch data for video game series "${query}"`);
     }
   }
   
