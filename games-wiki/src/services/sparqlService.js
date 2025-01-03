@@ -1,4 +1,6 @@
 export async function fetchSeriesData(query) {
+    document.body.style.cursor = "wait";
+
     const sparqlQuery = `
       SELECT DISTINCT ?series ?seriesLabel ?originalTitle ?logo ?genreLabel ?publisherLabel ?platformLabel ?part ?partLabel WHERE {
         ?series wdt:P31 wd:Q7058673;
@@ -51,10 +53,13 @@ export async function fetchSeriesData(query) {
       ],
     };
 
+    document.body.style.cursor = "default";
+
     return details;
   }
   
 export async function fetchGameData(gameUri) {
+  document.body.style.cursor = "wait";
   console.log(gameUri);
   const sparqlQuery = `
     SELECT DISTINCT ?game ?gameLabel ?logo ?originalTitle ?genreLabel ?publisherLabel ?countryLabel ?developerLabel ?platformLabel ?gameModeLabel ?announcementDate WHERE {
@@ -130,7 +135,7 @@ export async function fetchGameData(gameUri) {
     title: data.results.bindings[0]?.gameLabel?.value || "Not specified",
     originalTitle: data.results.bindings[0]?.originalTitle?.value || "Not specified",
     genre: [
-      ...new Set(data.results.bindings.map((binding) => binding.genreLabel?.value).filter(Boolean)),
+      ...new Set(data.results.bindings.map((binding) => binding.genreLabel?.value || "Not specified")),
     ],
     publisher: data.results.bindings[0]?.publisherLabel?.value || "Not specified",
     country: data.results.bindings[0]?.countryLabel?.value || "Not specified",
@@ -139,16 +144,18 @@ export async function fetchGameData(gameUri) {
     flagImage: dateData.results.bindings[0]?.flagImage?.value || null,
     sales: dateData.results.bindings[0]?.sales?.value || "Not specified",
     developer: [
-      ...new Set(data.results.bindings.map((binding) => binding.developerLabel?.value).filter(Boolean)),
+      ...new Set(data.results.bindings.map((binding) => binding.developerLabel?.value || "Not specified")),
     ],
     platform: [
-      ...new Set(data.results.bindings.map((binding) => binding.platformLabel?.value).filter(Boolean)),
+      ...new Set(data.results.bindings.map((binding) => binding.platformLabel?.value || "Not specified")),
     ],
     gameMode: [
-      ...new Set(data.results.bindings.map((binding) => binding.gameModeLabel?.value).filter(Boolean)),
+      ...new Set(data.results.bindings.map((binding) => binding.gameModeLabel?.value || "Not specified")),
     ],
     announcementDate: data.results.bindings[0]?.announcementDate?.value || null,
   };
+
+  document.body.style.cursor = "default";
 
   return gameDetails;
 }

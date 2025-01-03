@@ -124,6 +124,8 @@ h2 {
 }
 
 .saga-logo {
-  max-height: 200px;
+  height: 200px;
   margin: 0 auto;
+  margin-bottom: 20px;
+  max-width: 100%;
 }
