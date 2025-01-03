@@ -40,11 +40,11 @@ export async function fetchSeriesData(query) {
       originalTitle: data.results.bindings[0]?.originalTitle?.value || "Not specified",
       logo: data.results.bindings[0]?.logo?.value || null,
       genre: [
-        ...new Set(data.results.bindings.map((binding) => binding.genreLabel?.value || "Not specified")),
+        ...new Set(data.results.bindings.map((binding) => binding.genreLabel?.value)),
       ],
       publisher: data.results.bindings[0]?.publisherLabel?.value || "Not specified",
       platforms: [
-        ...new Set(data.results.bindings.map((binding) => binding.platformLabel?.value || "Not specified")),
+        ...new Set(data.results.bindings.map((binding) => binding.platformLabel?.value)),
       ],
       partIds: [
         ...new Set(data.results.bindings.map((binding) => binding.part?.value).filter(Boolean)),
