@@ -41,11 +41,11 @@ export async function fetchSeriesData(query) {
         originalTitle: data.results.bindings[0]?.originalTitle?.value || "Not specified",
         logo: data.results.bindings[0]?.logo?.value || null,
         genre: [
-          ...new Set(data.results.bindings.map((binding) => binding.genreLabel?.value)),
+          ...new Set(data.results.bindings.map((binding) => binding.genreLabel?.value).filter(Boolean)),
         ],
         publisher: data.results.bindings[0]?.publisherLabel?.value || "Not specified",
         platforms: [
-          ...new Set(data.results.bindings.map((binding) => binding.platformLabel?.value)),
+          ...new Set(data.results.bindings.map((binding) => binding.platformLabel?.value).filter(Boolean)),
         ],
         partIds: [
           ...new Set(data.results.bindings.map((binding) => binding.part?.value).filter(Boolean)),
@@ -57,7 +57,7 @@ export async function fetchSeriesData(query) {
       };
 
       document.body.style.cursor = "default";
-      
+
       if (details.title === "Not specified") {
         alert(`ERROR: Could not find a video game series named "${query}"`)
         return

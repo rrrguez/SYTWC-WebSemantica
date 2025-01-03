@@ -2,11 +2,17 @@
     display: grid;
 }
 
-.game-logo {
+.image-container {
     height: 200px;
+    display: grid;
+  }
+
+.game-logo {
+    max-height: 200px;
     margin: 0 auto;
     margin-bottom: 20px;
     max-width: 100%;
+    align-self: center;
 }
 
 .flag {

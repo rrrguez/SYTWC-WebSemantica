@@ -127,9 +127,14 @@ h2 {
   text-align: center;
 }
 
-.saga-logo {
+.image-container {
   height: 200px;
+  display: grid;
+}
+
+.saga-logo {
   margin: 0 auto;
   margin-bottom: 20px;
-  max-width: 100%;
+  max-width: 75%;
+  align-self: center;
 }

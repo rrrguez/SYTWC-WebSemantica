@@ -21,7 +21,9 @@ function GameDetails({ details }) {
     return (
         <div className="game-details">
             {details.logo ? (
-                <img src={details.logo} alt={`${details.title} logo`} className="game-logo"/>
+                <div className="image-container">
+                    <img src={details.logo} alt={`${details.title} logo`} className="game-logo"/>
+                </div>
             ) : (
                 <h2>{details.title}</h2>
             )}

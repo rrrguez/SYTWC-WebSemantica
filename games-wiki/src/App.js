@@ -46,7 +46,9 @@ function App() {
         <div className="data-container">
           <div className="details-container" id="saga-container">
             { sagaDetails.logo ? (
-              <img src={sagaDetails.logo} alt={`${sagaDetails.title} logo`} className="saga-logo" />
+              <div className="image-container">
+                <img src={sagaDetails.logo} alt={`${sagaDetails.title} logo`} className="saga-logo" />
+              </div>
             ) : (
               <h2>{sagaDetails.title}</h2>
             )}
