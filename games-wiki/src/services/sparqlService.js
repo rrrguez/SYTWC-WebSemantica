@@ -30,39 +30,43 @@ export async function fetchSeriesData(query) {
     const endpoint = "https://query.wikidata.org/sparql";
     const url = `${endpoint}?query=${encodeURIComponent(sparqlQuery)}`;
   
-    const response = await fetch(url, {
-      headers: { Accept: "application/sparql-results+json" },
-    });
-    const data = await response.json();
-  
-    const details = {
-      title: data.results.bindings[0]?.seriesLabel?.value || "Not specified",
-      originalTitle: data.results.bindings[0]?.originalTitle?.value || "Not specified",
-      logo: data.results.bindings[0]?.logo?.value || null,
-      genre: [
-        ...new Set(data.results.bindings.map((binding) => binding.genreLabel?.value)),
-      ],
-      publisher: data.results.bindings[0]?.publisherLabel?.value || "Not specified",
-      platforms: [
-        ...new Set(data.results.bindings.map((binding) => binding.platformLabel?.value)),
-      ],
-      partIds: [
-        ...new Set(data.results.bindings.map((binding) => binding.part?.value).filter(Boolean)),
-      ],
-      parts: [
-        ...new Set(data.results.bindings.map((binding) => binding.partLabel?.value).filter(Boolean),
-        ),
-      ],
-    };
+    try {
+      const response = await fetch(url, {
+        headers: { Accept: "application/sparql-results+json" },
+      });
+      const data = await response.json();
+    
+      const details = {
+        title: data.results.bindings[0]?.seriesLabel?.value || "Not specified",
+        originalTitle: data.results.bindings[0]?.originalTitle?.value || "Not specified",
+        logo: data.results.bindings[0]?.logo?.value || null,
+        genre: [
+          ...new Set(data.results.bindings.map((binding) => binding.genreLabel?.value)),
+        ],
+        publisher: data.results.bindings[0]?.publisherLabel?.value || "Not specified",
+        platforms: [
+          ...new Set(data.results.bindings.map((binding) => binding.platformLabel?.value)),
+        ],
+        partIds: [
+          ...new Set(data.results.bindings.map((binding) => binding.part?.value).filter(Boolean)),
+        ],
+        parts: [
+          ...new Set(data.results.bindings.map((binding) => binding.partLabel?.value).filter(Boolean),
+          ),
+        ],
+      };
 
-    document.body.style.cursor = "default";
+      if (details.title === "Not specified") {
+        alert(`ERROR: Could not find a video game series named "${query}"`)
+        return
+      }
 
-    if (details.title === "Not specified") {
-      alert(`ERROR: Could not find a video game series named "${query}"`)
-      return
+      return details;
+
+    } catch(error) {
+      document.body.style.cursor = "default";
+      alert(`ERROR: Could not find video game series "${query}":\n` + error);
     }
-
-    return details;
   }
   
 export async function fetchGameData(gameUri) {
