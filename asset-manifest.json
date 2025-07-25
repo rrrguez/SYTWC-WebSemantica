@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/SYTWC-WebSemantica/static/css/main.b9c39201.css",
+    "main.js": "/SYTWC-WebSemantica/static/js/main.54494b47.js",
+    "static/media/banner.jpg": "/SYTWC-WebSemantica/static/media/banner.d71b306d943b16fe75a3.jpg",
+    "static/media/Retro Gaming.ttf": "/SYTWC-WebSemantica/static/media/Retro Gaming.c1a52a602585b2d6baf8.ttf",
+    "index.html": "/SYTWC-WebSemantica/index.html",
+    "main.b9c39201.css.map": "/SYTWC-WebSemantica/static/css/main.b9c39201.css.map",
+    "main.54494b47.js.map": "/SYTWC-WebSemantica/static/js/main.54494b47.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b9c39201.css",
+    "static/js/main.54494b47.js"
+  ]
+}
